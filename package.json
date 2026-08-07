@@ -1,0 +1,22 @@
+{
+  "name": "yojana-connect",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n FRONTEND,BACKEND \"pnpm frontend\" \"pnpm backend\"",
+    "frontend": "pnpm --filter @workspace/yojana-connect dev",
+    "frontend:build": "pnpm --filter @workspace/yojana-connect build",
+    "backend": "pnpm --filter @workspace/backend dev",
+    "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "typecheck": "pnpm -r --if-present run typecheck"
+  },
+  "devDependencies": {
+    "@rollup/rollup-win32-x64-msvc": "^4.60.3",
+    "@tailwindcss/oxide-win32-x64-msvc": "^4.3.0",
+    "concurrently": "^9.2.1",
+    "lightningcss-win32-x64-msvc": "1.32.0",
+    "prettier": "^3.8.3",
+    "typescript": "~5.9.3"
+  }
+}
