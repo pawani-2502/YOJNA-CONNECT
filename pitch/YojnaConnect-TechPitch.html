@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YojanaConnect — Technical Pitch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <style>
+    :root {
+      --navy: #070f1c;
+      --slate: #0f1c30;
+      --card: #152a45;
+      --orange: #ff8c42;
+      --cyan: #2dd4bf;
+      --blue: #38bdf8;
+      --green: #34d399;
+      --soft: #cbd5e1;
+      --muted: #94a3b8;
+      --white: #f8fafc;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      background: var(--navy);
+      font-family: "Outfit", system-ui, sans-serif;
+    }
+
+    .reveal {
+      font-family: "Outfit", system-ui, sans-serif;
+      color: var(--white);
+      font-weight: 400;
+    }
+
+    .reveal .slides { text-align: left; }
+
+    .reveal .slides section {
+      padding: 36px 56px;
+      background:
+        radial-gradient(900px 420px at 12% -10%, rgba(255,140,66,0.18), transparent 55%),
+        radial-gradient(700px 380px at 100% 0%, rgba(45,212,191,0.12), transparent 50%),
+        linear-gradient(160deg, #0a1424 0%, #070f1c 55%, #0c1830 100%);
+      height: 100%;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3 {
+      font-family: "Outfit", sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      text-transform: none;
+      color: var(--white);
+      margin: 0 0 0.4em;
+    }
+
+    .reveal h1 { font-size: 2.6em; line-height: 1.05; }
+    .reveal h2 { font-size: 1.85em; line-height: 1.1; }
+    .reveal h3 { font-size: 1.15em; color: var(--cyan); font-weight: 700; }
+
+    .reveal p, .reveal li { color: var(--soft); font-size: 0.92em; line-height: 1.45; }
+    .reveal code, .mono {
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 0.78em;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255,140,66,0.16);
+      border: 1px solid rgba(255,140,66,0.45);
+      color: var(--orange);
+      font-size: 0.42em;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .live-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 0 rgba(52,211,153,0.7);
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(52,211,153,0.55); }
+      70% { box-shadow: 0 0 0 10px rgba(52,211,153,0); }
+      100% { box-shadow: 0 0 0 0 rgba(52,211,153,0); }
+    }
+
+    .url {
+      color: var(--orange);
+      font-weight: 700;
+      font-size: 0.85em;
+      word-break: break-all;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(148,163,184,0.18);
+      border-radius: 18px;
+      padding: 18px 18px 16px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      transition: transform 0.35s ease, border-color 0.35s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,140,66,0.45);
+    }
+
+    .metric {
+      text-align: center;
+      padding: 20px 10px;
+    }
+    .metric .n {
+      font-size: 2.1em;
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(120deg, var(--orange), #ffc089);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .metric .l { margin-top: 8px; color: var(--muted); font-size: 0.55em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    .arch-row {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 16px;
+      align-items: center;
+      margin: 12px 0;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,0.16);
+      background: rgba(15,28,48,0.75);
+    }
+    .arch-tag {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.55em;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--navy);
+      background: var(--orange);
+      border-radius: 8px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .arch-tag.cyan { background: var(--cyan); }
+    .arch-tag.green { background: var(--green); }
+
+    .flow-step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-left: 3px solid var(--orange);
+      background: rgba(255,140,66,0.06);
+      border-radius: 0 12px 12px 0;
+    }
+    .flow-step .idx {
+      font-family: "IBM Plex Mono", monospace;
+      color: var(--orange);
+      font-weight: 700;
+      font-size: 0.7em;
+      min-width: 28px;
+    }
+
+    .api-row {
+      display: grid;
+      grid-template-columns: 70px 1.2fr 1.3fr;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(148,163,184,0.12);
+      font-size: 0.72em;
+    }
+    .method {
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 700;
+      color: var(--navy);
+      background: var(--green);
+      border-radius: 6px;
+      padding: 4px 8px;
+      text-align: center;
+      font-size: 0.85em;
+    }
+    .path { font-family: "IBM Plex Mono", monospace; color: var(--cyan); }
+
+    .shot {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.25);
+      box-shadow: 0 16px 50px rgba(0,0,0,0.45);
+    }
+
+    .caption {
+      margin-top: 8px;
+      font-size: 0.45em;
+      color: var(--muted);
+      text-align: center;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .stack-col h3 { margin-bottom: 10px; }
+    .stack-col ul { list-style: none; padding: 0; margin: 0; }
+    .stack-col li {
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(148,163,184,0.12);
+      font-size: 0.68em;
+      color: var(--soft);
+    }
+    .stack-col li::before {
+      content: "▸ ";
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    .phase-num { color: var(--orange); font-size: 0.55em; font-weight: 700; letter-spacing: 0.12em; }
+
+    .footer-note {
+      position: absolute;
+      left: 56px;
+      bottom: 22px;
+      font-size: 0.38em;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .big-ask { font-size: 1.9em; font-weight: 800; letter-spacing: -0.03em; margin: 10px 0 18px; }
+
+    .reveal .progress { color: var(--orange); height: 4px; }
+    .reveal .controls { color: var(--orange); }
+    .reveal .slide-number {
+      font-family: "IBM Plex Mono", monospace;
+      color: var(--muted);
+      font-size: 14px;
+      left: auto; right: 18px; bottom: 14px;
+    }
+
+    .two-col-shot {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .chip {
+      font-size: 0.42em;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(45,212,191,0.35);
+      color: var(--cyan);
+      background: rgba(45,212,191,0.08);
+      font-weight: 600;
+    }
+
+    .codebox {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.55em;
+      background: #050b14;
+      border: 1px solid rgba(56,189,248,0.25);
+      border-radius: 14px;
+      padding: 16px 18px;
+      color: #a5f3fc;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+    .codebox .k { color: #fb923c; }
+    .codebox .s { color: #86efac; }
+    .codebox .c { color: #64748b; }
+
+    .center-hero { display: flex; flex-direction: column; justify-content: center; min-height: 100%; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 1 -->
+      <section>
+        <div class="center-hero">
+          <div class="eyebrow"><span class="live-dot"></span> Live Production · Technical Pitch</div>
+          <h1>YojanaConnect</h1>
+          <p style="font-size:1.05em;color:var(--cyan);font-weight:600;margin:0 0 10px;">
+            Enterprise-grade Welfare Scheme Discovery Platform
+          </p>
+          <p style="max-width:16em;font-size:0.75em;color:var(--muted);">
+            Age-aware · Bilingual · REST + MySQL · Citizen → Official Portal handoff
+          </p>
+          <p class="url" style="margin-top:22px;">https://yojnaconnect.prakharkr.online/schemes</p>
+          <div class="chip-row">
+            <span class="chip">React 19</span>
+            <span class="chip">TypeScript</span>
+            <span class="chip">Express 5</span>
+            <span class="chip">MySQL 8</span>
+            <span class="chip">TanStack Query</span>
+            <span class="chip">i18next</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section>
+        <div class="eyebrow">01 · Context</div>
+        <h2>The discovery gap</h2>
+        <p style="margin-bottom:18px;color:var(--muted);font-size:0.7em;">
+          400+ schemes exist. Citizens still fail at step one: finding the right one.
+        </p>
+        <div class="grid-2">
+          <div class="card fragment fade-up"><h3>Fragmented sources</h3><p>Ministry sites, PDFs, and state portals — no single citizen-grade entry.</p></div>
+          <div class="card fragment fade-up"><h3>Opaque eligibility</h3><p>Bureaucratic language blocks rural and first-time digital users.</p></div>
+          <div class="card fragment fade-up"><h3>Language friction</h3><p>English-first UX excludes Hindi / regional audiences at scale.</p></div>
+          <div class="card fragment fade-up"><h3>No personalization</h3><p>Catalog browsing, not life-stage intelligence.</p></div>
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section>
+        <div class="eyebrow">02 · Product Thesis</div>
+        <h2>Life-stage first discovery</h2>
+        <div class="grid-4" style="margin-top:20px;">
+          <div class="card fragment fade-up"><div class="phase-num">01</div><h3>Age signal</h3><p>Map citizen age → Teen / YA / Middle / Senior.</p></div>
+          <div class="card fragment fade-up"><div class="phase-num">02</div><h3>Filter engine</h3><p>Sector · income · keyword · central/state.</p></div>
+          <div class="card fragment fade-up"><div class="phase-num">03</div><h3>Scheme intel</h3><p>Eligibility, docs, steps, terms — one screen.</p></div>
+          <div class="card fragment fade-up"><div class="phase-num">04</div><h3>Official handoff</h3><p>Apply Now opens government portal. No PII.</p></div>
+        </div>
+        <p class="fragment" style="margin-top:20px;color:var(--orange);font-weight:700;font-size:0.8em;">
+          Outcome: “Which yojana am I eligible for?” → shortlist in under 60 seconds.
+        </p>
+      </section>
+
+      <!-- 4 Live metrics -->
+      <section>
+        <div class="eyebrow"><span class="live-dot"></span> Live metrics</div>
+        <h2>Production snapshot</h2>
+        <div class="two-col-shot" style="margin-top:10px;">
+          <div>
+            <div class="grid-4">
+              <div class="card metric"><div class="n">159</div><div class="l">Schemes</div></div>
+              <div class="card metric"><div class="n" style="background:linear-gradient(120deg,#38bdf8,#7dd3fc);-webkit-background-clip:text;background-clip:text;">39</div><div class="l">Central</div></div>
+              <div class="card metric"><div class="n" style="background:linear-gradient(120deg,#34d399,#6ee7b7);-webkit-background-clip:text;background-clip:text;">120</div><div class="l">State</div></div>
+              <div class="card metric"><div class="n" style="background:linear-gradient(120deg,#2dd4bf,#99f6e4);-webkit-background-clip:text;background-clip:text;">2</div><div class="l">Languages</div></div>
+            </div>
+            <ul style="margin-top:18px;font-size:0.72em;">
+              <li class="fragment">Age-personalized grid + popularity ranking</li>
+              <li class="fragment">Sector / income / keyword filters with live counts</li>
+              <li class="fragment">YojanaBot guide + EN / हिन्दी i18n</li>
+              <li class="fragment">WhatsApp share · official Apply Now handoff</li>
+            </ul>
+          </div>
+          <div>
+            <img class="shot" src="assets/yojna-schemes.png" alt="Schemes page" />
+            <div class="caption">Live /schemes — Young Adult focus</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 Product surfaces -->
+      <section>
+        <div class="eyebrow">03 · UX Surfaces</div>
+        <h2>Citizen journey, productized</h2>
+        <div class="grid-4" style="margin-top:12px;">
+          <div class="fragment fade-up">
+            <img class="shot" src="assets/yojna-home.png" alt="Home" />
+            <div class="caption">Age entry</div>
+          </div>
+          <div class="fragment fade-up">
+            <img class="shot" src="assets/yojna-detail.png" alt="Detail" />
+            <div class="caption">Scheme detail</div>
+          </div>
+          <div class="fragment fade-up">
+            <img class="shot" src="assets/yojna-extra.png" alt="Bot" />
+            <div class="caption">YojanaBot</div>
+          </div>
+          <div class="fragment fade-up">
+            <img class="shot" src="assets/yojna-language-hindi.png" alt="Hindi" />
+            <div class="caption">Hindi UI</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6 Architecture -->
+      <section>
+        <div class="eyebrow">04 · Architecture</div>
+        <h2>3-tier, audit-friendly design</h2>
+        <p style="color:var(--muted);font-size:0.65em;margin-bottom:8px;">Chosen for clarity, gov-IT familiarity, and horizontal scale later.</p>
+        <div class="arch-row fragment fade-up">
+          <div class="arch-tag">PRESENTATION</div>
+          <div>
+            <strong style="color:var(--white);">React 19 SPA · TypeScript · Vite</strong>
+            <p style="margin:4px 0 0;font-size:0.65em;">TanStack Query · Wouter · i18next · Tailwind v4 · Radix/shadcn · Framer Motion</p>
+          </div>
+        </div>
+        <div class="arch-row fragment fade-up">
+          <div class="arch-tag cyan">APPLICATION</div>
+          <div>
+            <strong style="color:var(--white);">Node.js · Express 5 REST</strong>
+            <p style="margin:4px 0 0;font-size:0.65em;">Controllers · parameterized SQL · JSON field parsers · CORS · /api/healthz</p>
+          </div>
+        </div>
+        <div class="arch-row fragment fade-up">
+          <div class="arch-tag green">DATA</div>
+          <div>
+            <strong style="color:var(--white);">MySQL 8+ knowledge base</strong>
+            <p style="margin:4px 0 0;font-size:0.65em;">JSON columns for age/sectors · popularity_score ranking · connection pooling</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7 Sequence -->
+      <section>
+        <div class="eyebrow">05 · Runtime Path</div>
+        <h2>Request → filter → render</h2>
+        <div class="flow-step fragment"><div class="idx">01</div><div>Browser stores <span class="mono">ageGroup</span> in localStorage after age slider</div></div>
+        <div class="flow-step fragment"><div class="idx">02</div><div class="mono">GET /api/schemes?ageGroup=&amp;sector=&amp;incomeLimit=&amp;search=</div></div>
+        <div class="flow-step fragment"><div class="idx">03</div><div>Express builds parameterized WHERE — <span class="mono">JSON_CONTAINS</span>, income brackets, LIKE</div></div>
+        <div class="flow-step fragment"><div class="idx">04</div><div><span class="mono">ORDER BY popularity_score</span> → parse JSON fields → SchemeCards</div></div>
+        <div class="flow-step fragment"><div class="idx">05</div><div>Detail <span class="mono">/api/schemes/:id</span> → Apply Now = official government URL</div></div>
+      </section>
+
+      <!-- 8 Code sample -->
+      <section>
+        <div class="eyebrow">06 · Engineering Signal</div>
+        <h2>Filter contract (conceptual)</h2>
+        <div class="codebox fragment">
+<span class="c">// age + sector + income + search — all parameterized</span>
+<span class="k">GET</span> /api/schemes?<span class="s">ageGroup</span>=youngAdult&amp;<span class="s">sector</span>=agriculture
+
+<span class="c">// MySQL filter primitives</span>
+JSON_CONTAINS(age_groups, '"youngAdult"')
+JSON_CONTAINS(sectors, '"agriculture"')
+(income_limit IS NULL OR income_limit &gt;= ?)
+name LIKE ? OR description LIKE ?
+ORDER BY popularity_score DESC
+        </div>
+        <p class="fragment" style="margin-top:16px;font-size:0.7em;color:var(--muted);">
+          Ranking today = popularity score (deterministic, explainable). ML recommendation is a roadmap layer — not overclaimed as live.
+        </p>
+      </section>
+
+      <!-- 9 Stack -->
+      <section>
+        <div class="eyebrow">07 · Stack</div>
+        <h2>Production technology choices</h2>
+        <div class="grid-3" style="margin-top:12px;">
+          <div class="card stack-col">
+            <h3>Frontend</h3>
+            <ul>
+              <li>React 19 + TypeScript</li>
+              <li>Vite build pipeline</li>
+              <li>TanStack Query cache</li>
+              <li>Wouter routing</li>
+              <li>i18next EN / HI</li>
+              <li>Tailwind CSS v4</li>
+              <li>Radix / shadcn UI</li>
+              <li>Framer Motion</li>
+            </ul>
+          </div>
+          <div class="card stack-col">
+            <h3>Backend</h3>
+            <ul>
+              <li>Node.js runtime</li>
+              <li>Express 5 REST</li>
+              <li>mysql2 pool</li>
+              <li>dotenv secrets</li>
+              <li>CORS edge policy</li>
+              <li>JSON field parsers</li>
+              <li>pnpm monorepo</li>
+              <li>Orval typed client</li>
+            </ul>
+          </div>
+          <div class="card stack-col">
+            <h3>Data &amp; Ops</h3>
+            <ul>
+              <li>MySQL 8 JSON cols</li>
+              <li>Seed SQL catalog</li>
+              <li>Nginx reverse proxy</li>
+              <li>Static SPA deploy</li>
+              <li>Healthz probe</li>
+              <li>Env-based config</li>
+              <li>HTTPS production</li>
+              <li>Mobile-first civic UX</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 API -->
+      <section>
+        <div class="eyebrow">08 · API Contracts</div>
+        <h2>Read-optimized REST surface</h2>
+        <p style="font-size:0.62em;color:var(--muted);margin-bottom:8px;">Ready to power CSC kiosks, WhatsApp bots, or state shell apps later.</p>
+        <div class="api-row"><div class="method">GET</div><div class="path">/api/healthz</div><div>Liveness probe</div></div>
+        <div class="api-row fragment"><div class="method">GET</div><div class="path">/api/schemes</div><div>Filtered list — age, sector, income, search, state</div></div>
+        <div class="api-row fragment"><div class="method">GET</div><div class="path">/api/schemes/:id</div><div>Full scheme document</div></div>
+        <div class="api-row fragment"><div class="method">GET</div><div class="path">/api/schemes/:id/related</div><div>Related / adjacency set</div></div>
+        <div class="api-row fragment"><div class="method">GET</div><div class="path">/api/schemes/popular</div><div>Top-N by popularity_score</div></div>
+        <div class="api-row fragment"><div class="method">GET</div><div class="path">/api/schemes/stats</div><div>Aggregate KPIs for dashboard</div></div>
+        <div class="api-row fragment"><div class="method">GET</div><div class="path">/api/sectors</div><div>Sector taxonomy (+ age filter)</div></div>
+      </section>
+
+      <!-- 11 Data model -->
+      <section>
+        <div class="eyebrow">09 · Data Model</div>
+        <h2>Flexible scheme knowledge base</h2>
+        <div class="grid-2" style="margin-top:10px;">
+          <div class="card">
+            <h3>schemes</h3>
+            <p class="mono" style="font-size:0.58em;line-height:1.7;color:var(--soft);">
+              id · name · name_hindi · ministry<br/>
+              age_groups (JSON) · sectors (JSON)<br/>
+              income_limit · categories · benefit<br/>
+              eligibility / documents (JSON)<br/>
+              how_to_apply · official_link · deadline<br/>
+              is_state · state · tags · popularity_score
+            </p>
+          </div>
+          <div>
+            <div class="card" style="margin-bottom:14px;">
+              <h3>sectors</h3>
+              <p class="mono" style="font-size:0.58em;color:var(--soft);">
+                sector_id · name · name_hindi · age_groups · icon
+              </p>
+            </div>
+            <div class="card">
+              <h3>Why JSON columns?</h3>
+              <p style="font-size:0.68em;">Multi-value tags without join explosion. Fast metadata iteration. Queryable via MySQL <span class="mono">JSON_CONTAINS</span>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12 Security -->
+      <section>
+        <div class="eyebrow">10 · Trust</div>
+        <h2>Security &amp; privacy model</h2>
+        <div class="grid-2" style="margin-top:12px;">
+          <div class="card">
+            <h3 style="color:var(--green);">Current posture</h3>
+            <ul style="font-size:0.68em;padding-left:1.1em;">
+              <li>Discovery layer — not a benefit processor</li>
+              <li>No Aadhaar / bank / KYC collected</li>
+              <li>Apply on official government portals</li>
+              <li>Parameterized SQL queries</li>
+              <li>Secrets via environment variables</li>
+              <li>HTTPS + Nginx in production</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="color:var(--orange);">Hardening path</h3>
+            <ul style="font-size:0.68em;padding-left:1.1em;">
+              <li>Remove public debug endpoints</li>
+              <li>Suppress stack traces at edge</li>
+              <li>Tighten CORS to known origins</li>
+              <li>Rate-limit public GET APIs</li>
+              <li>WAF / CDN + audit logging</li>
+              <li>Auth when bookmarks/admin ship</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 13 Scale -->
+      <section>
+        <div class="eyebrow">11 · Scale</div>
+        <h2>Reliability roadmap</h2>
+        <div class="grid-4" style="margin-top:18px;">
+          <div class="card fragment fade-up"><div class="phase-num">NOW</div><h3>MVP stack</h3><p>SPA + Node API + MySQL. Read-heavy catalog. Connection pool.</p></div>
+          <div class="card fragment fade-up"><div class="phase-num">NEXT</div><h3>Cache + CDN</h3><p>Redis for popular lists. Static edge cache for SPA assets.</p></div>
+          <div class="card fragment fade-up"><div class="phase-num">SCALE</div><h3>Horizontal API</h3><p>Stateless replicas behind LB. MySQL read replicas.</p></div>
+          <div class="card fragment fade-up"><div class="phase-num">GOV</div><h3>Managed host</h3><p>NIC / state DC / K8s. Observability + SLOs.</p></div>
+        </div>
+      </section>
+
+      <!-- 14 Diff -->
+      <section>
+        <div class="eyebrow">12 · Differentiation</div>
+        <h2>Why this wins attention</h2>
+        <div class="grid-2" style="margin-top:10px;">
+          <div class="card fragment"><h3>Life-stage entry</h3><p>Age → shortlist, not ministry-first browsing.</p></div>
+          <div class="card fragment"><h3>Unified scheme intel</h3><p>Eligibility + docs + steps + official link in one flow.</p></div>
+          <div class="card fragment"><h3>Bilingual native</h3><p>EN/HI UI + Hindi names in the data model.</p></div>
+          <div class="card fragment"><h3>Extensible API</h3><p>Same REST can power CSC / WhatsApp channels.</p></div>
+        </div>
+      </section>
+
+      <!-- 15 TN -->
+      <section>
+        <div class="eyebrow">13 · Tamil Nadu</div>
+        <h2>Pilot roadmap</h2>
+        <div class="grid-3" style="margin-top:18px;">
+          <div class="card fragment fade-up">
+            <div class="phase-num">PHASE 1</div>
+            <h3>Localize</h3>
+            <p>Tamil UI strings · top TN schemes seed · content QA with department sources.</p>
+          </div>
+          <div class="card fragment fade-up">
+            <div class="phase-num">PHASE 2</div>
+            <h3>Pilot</h3>
+            <p>1–2 districts / CSC · discovery KPIs · citizen feedback loop.</p>
+          </div>
+          <div class="card fragment fade-up">
+            <div class="phase-num">PHASE 3</div>
+            <h3>Operate</h3>
+            <p>Admin CMS · analytics · SLA hosting on government infrastructure.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 16 Close -->
+      <section>
+        <div class="center-hero">
+          <div class="eyebrow">The ask</div>
+          <div class="big-ask">Pilot YojanaConnect<br/>for Tamil Nadu</div>
+          <div class="card" style="max-width:920px;">
+            <ol style="margin:0;padding-left:1.2em;font-size:0.78em;">
+              <li class="fragment">Verified TN scheme content + Tamil language pack</li>
+              <li class="fragment">Preferred hosting guidance (state DC / cloud)</li>
+              <li class="fragment">CSC / district discovery pilot with measurable KPIs</li>
+            </ol>
+          </div>
+          <p class="url" style="margin-top:24px;">https://yojnaconnect.prakharkr.online/schemes</p>
+          <p style="color:var(--muted);font-size:0.65em;margin-top:8px;">Thank you — ready for architecture deep-dive &amp; live walkthrough</p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: "c/t",
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      transition: "slide",
+      backgroundTransition: "fade",
+      center: false,
+      controls: true,
+      progress: true,
+      plugins: [RevealNotes],
+    });
+  </script>
+</body>
+</html>
